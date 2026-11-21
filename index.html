@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aplikasi Data Siswa</title>
+<style>
+:root{--navy:#123879;--blue:#2375ed;--pale:#eef5ff;--ink:#172b4d;--muted:#667795;--line:#dce6f5;--white:#fff}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,"Segoe UI",Arial,sans-serif;background:#f2f6fc;color:var(--ink)}
+.layout{display:flex;min-height:100vh}.sidebar{width:245px;background:linear-gradient(180deg,#123879,#1d4e9b);color:#fff;padding:25px 17px;display:flex;flex-direction:column;flex-shrink:0}
+.brand{text-align:center;padding:10px 5px 28px}.brand .logo{font-size:43px}.brand h2{font-size:18px;margin:7px 0 0}.brand p{margin:4px 0;color:#d9e7ff;font-size:12px}
+.nav a{display:flex;gap:13px;align-items:center;padding:14px 15px;margin:5px 0;border-radius:11px;color:#e9f1ff;text-decoration:none;font-weight:600}.nav a.active,.nav a:hover{background:#347de9;color:white}.nav .ico{width:23px;text-align:center;font-size:19px}.logout{margin-top:auto;border-top:1px solid #ffffff40;padding-top:15px}
+.main{flex:1;min-width:0;padding:22px 25px}.topbar{background:linear-gradient(110deg,#fff,#e3efff);border:1px solid #e0eaff;border-radius:18px;padding:22px 27px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 18px #173d7410}
+.heading{display:flex;align-items:center;gap:18px}.cap{font-size:42px}.heading h1{font-size:27px;margin:0 0 5px;color:#102e65}.heading p{margin:0;color:#627493}.admin{font-weight:700;color:#173b78;background:#fff;padding:10px 15px;border-radius:30px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:20px 0}.stat{padding:20px;border-radius:16px;background:white;border:1px solid var(--line);box-shadow:0 3px 12px #1c42700a}.stat span{font-size:13px;color:var(--muted);font-weight:600}.stat strong{display:block;font-size:29px;margin-top:8px;color:#173b78}.stat:nth-child(2) strong{color:#15965b}.stat:nth-child(3) strong{color:#d94368}.stat:nth-child(4) strong{color:#7445c5}
+.content{display:grid;grid-template-columns:minmax(290px,390px) minmax(0,1fr);gap:17px;align-items:start}.panel{background:white;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 4px 16px #1c42700a}.panel-title{background:#153b7d;color:#fff;padding:16px 19px;font-size:18px;font-weight:700}.panel-body{padding:19px}
+.field{margin-bottom:15px}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}.field input[type=text],.field input[type=number],.field select,.field textarea{width:100%;border:1px solid #cbd8eb;border-radius:9px;padding:11px 12px;font:inherit;font-size:14px;color:var(--ink);background:#fff;outline:none}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #2375ed20}.field textarea{height:83px;resize:vertical}.choices{display:flex;gap:16px;flex-wrap:wrap;font-size:14px}.choices label{font-weight:500;display:flex;gap:6px;align-items:center;margin:0}.choices input{accent-color:var(--blue)}
+.actions{display:flex;gap:10px;margin-top:17px}.btn{border:0;border-radius:10px;padding:12px 16px;font-weight:700;cursor:pointer;font-size:14px}.btn-primary{background:var(--blue);color:#fff;flex:1}.btn-light{background:#e9eef7;color:#19396f;flex:1}.btn:hover{filter:brightness(.96)}
+.table-head{display:flex;justify-content:space-between;gap:12px;align-items:center}.search{border:1px solid #d2def0;border-radius:22px;padding:10px 14px;width:min(230px,50%);font:inherit}.table-wrap{overflow-x:auto}.table{width:100%;border-collapse:collapse;min-width:650px;font-size:13px}.table th{background:#e9f1ff;color:#17386f;text-align:left;padding:12px 10px}.table td{padding:12px 10px;border-bottom:1px solid #e6edf7}.table tr:hover td{background:#f8fbff}.mini{border:0;border-radius:7px;padding:7px 9px;cursor:pointer;margin-right:4px}.edit{background:#e2efff;color:#1764ca}.delete{background:#ffe7eb;color:#cf3150}.empty{text-align:center;color:#7a89a3;padding:28px!important}.foot{color:#74839d;font-size:12px;text-align:center;padding:22px 5px}
+@media(max-width:1050px){.content{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.sidebar{width:68px;padding:15px 8px}.brand h2,.brand p,.nav a .navtext{display:none}.brand .logo{font-size:30px}.nav a{justify-content:center;padding:13px 5px}.nav .ico{font-size:20px}.main{padding:12px}.topbar{padding:17px}.heading h1{font-size:20px}.heading p{font-size:12px}.cap{font-size:30px}.admin{font-size:12px;padding:8px}.stats{gap:9px}.stat{padding:14px}.stat strong{font-size:23px}.stat span{font-size:11px}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="brand"><div class="logo">🎓</div><h2>SMK PGRI 2</h2><p>PONOROGO</p></div>
+  <nav class="nav">
+    <a class="active" href="#"><span class="ico">⌂</span><span class="navtext">Beranda</span></a>
+    <a href="#form"><span class="ico">👥</span><span class="navtext">Data Siswa</span></a>
+    <a href="#"><span class="ico">▣</span><span class="navtext">Absensi</span></a>
+    <a href="#"><span class="ico">▥</span><span class="navtext">Laporan</span></a>
+    <a href="#"><span class="ico">⚙</span><span class="navtext">Pengaturan</span></a>
+  </nav>
+  <div class="logout"><a href="#" style="color:white;text-decoration:none;padding:10px 12px;display:block">⇥ <span class="navtext">Keluar</span></a></div>
+</aside>
+<main class="main">
+  <header class="topbar">
+    <div class="heading"><div class="cap">🎓</div><div><h1>Aplikasi Data Siswa</h1><p>Kelola data siswa dengan mudah dan cepat</p></div></div>
+    <div class="admin">● &nbsp; Admin</div>
+  </header>
+  <section class="stats">
+    <div class="stat"><span>👥 &nbsp; TOTAL SISWA</span><strong id="total">0</strong></div>
+    <div class="stat"><span>♂ &nbsp; LAKI-LAKI</span><strong id="male">0</strong></div>
+    <div class="stat"><span>♀ &nbsp; PEREMPUAN</span><strong id="female">0</strong></div>
+    <div class="stat"><span>▦ &nbsp; KELAS TERDATA</span><strong id="classes">0</strong></div>
+  </section>
+  <section class="content">
+    <div class="panel" id="form">
+      <div class="panel-title">＋ &nbsp; Tambah Data Siswa</div>
+      <div class="panel-body">
+        <form id="studentForm">
+          <div class="field"><label for="nama">Nama Lengkap</label><input id="nama" type="text" placeholder="Masukkan nama lengkap" required></div>
+          <div class="field"><label for="nis">NIS</label><input id="nis" type="text" placeholder="Masukkan NIS" required></div>
+          <div class="field"><label>Jenis Kelamin</label><div class="choices">
+            <label><input type="radio" name="gender" value="Laki-Laki" required> Laki-Laki</label>
+            <label><input type="radio" name="gender" value="Perempuan"> Perempuan</label>
+          </div></div>
+          <div class="field"><label for="kelas">Kelas</label><select id="kelas" required><option value="">Pilih kelas</option><option>X RPL 1</option><option>X RPL 2</option><option>XI RPL 1</option><option>XI RPL 2</option><option>XII RPL 1</option><option>XII RPL 2</option><option>XII RPL 3</option></select></div>
+          <div class="field"><label>Hobi</label><div class="choices">
+            <label><input type="checkbox" name="hobi" value="Membaca"> Membaca</label>
+            <label><input type="checkbox" name="hobi" value="Gaming"> Gaming</label>
+            <label><input type="checkbox" name="hobi" value="Olahraga"> Olahraga</label>
+            <label><input type="checkbox" name="hobi" value="Musik"> Musik</label>
+          </div></div>
+          <div class="field"><label for="alamat">Alamat</label><textarea id="alamat" placeholder="Masukkan alamat lengkap" required></textarea></div>
+          <div class="actions"><button class="btn btn-primary" type="submit" id="saveBtn">💾 Simpan</button><button class="btn btn-light" type="reset" id="resetBtn">↻ Reset</button></div>
+        </form>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title table-head"><span>☷ &nbsp; Daftar Siswa</span><input class="search" id="search" type="search" placeholder="Cari nama atau NIS..."></div>
+      <div class="panel-body" style="padding:12px">
+        <div class="table-wrap"><table class="table"><thead><tr><th>No</th><th>Nama</th><th>NIS</th><th>JK</th><th>Kelas</th><th>Hobi</th><th>Aksi</th></tr></thead><tbody id="studentRows"><tr><td colspan="7" class="empty">Belum ada data siswa. Silakan tambahkan data.</td></tr></tbody></table></div>
+        <div id="countInfo" style="font-size:12px;color:#71809a;padding:12px 5px 3px">Menampilkan 0 data</div>
+      </div>
+    </div>
+  </section>
+  <footer class="foot">Aplikasi Data Siswa &nbsp; © 2026 SMK PGRI 2 Ponorogo &nbsp; • &nbsp; Belajar · Berkarya · Berprestasi</footer>
+</main>
+</div>
+<script>
+const form=document.getElementById('studentForm'), rows=document.getElementById('studentRows'), search=document.getElementById('search');
+let students=JSON.parse(localStorage.getItem('dataSiswaDemo')||'[]'), editId=null;
+function save(){localStorage.setItem('dataSiswaDemo',JSON.stringify(students))}
+function updateStats(){
+ document.getElementById('total').textContent=students.length;
+ document.getElementById('male').textContent=students.filter(s=>s.gender==='Laki-Laki').length;
+ document.getElementById('female').textContent=students.filter(s=>s.gender==='Perempuan').length;
+ document.getElementById('classes').textContent=new Set(students.map(s=>s.kelas)).size;
+}
+function render(){
+ const q=search.value.toLowerCase();
+ const filtered=students.filter(s=>s.nama.toLowerCase().includes(q)||s.nis.toLowerCase().includes(q));
+ rows.innerHTML=filtered.length?filtered.map((s,i)=>`<tr><td>${i+1}</td><td>${escapeHtml(s.nama)}</td><td>${escapeHtml(s.nis)}</td><td>${s.gender}</td><td>${escapeHtml(s.kelas)}</td><td>${escapeHtml(s.hobi.join(', ')||'-')}</td><td><button class="mini edit" onclick="editStudent('${s.id}')">✎</button><button class="mini delete" onclick="deleteStudent('${s.id}')">✕</button></td></tr>`).join(''):'<tr><td colspan="7" class="empty">Data tidak ditemukan.</td></tr>';
+ document.getElementById('countInfo').textContent=`Menampilkan ${filtered.length} dari ${students.length} data`;
+ updateStats();
+}
+function escapeHtml(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+form.addEventListener('submit',e=>{
+ e.preventDefault();
+ const gender=document.querySelector('input[name="gender"]:checked');
+ const data={id:editId||String(Date.now()),nama:document.getElementById('nama').value.trim(),nis:document.getElementById('nis').value.trim(),gender:gender.value,kelas:document.getElementById('kelas').value,hobi:[...document.querySelectorAll('input[name="hobi"]:checked')].map(x=>x.value),alamat:document.getElementById('alamat').value.trim()};
+ if(students.some(s=>s.nis===data.nis&&s.id!==editId)){alert('NIS tersebut sudah terdaftar.');return}
+ if(editId){students=students.map(s=>s.id===editId?data:s)}else{students.push(data)}
+ save();render();form.reset();editId=null;document.getElementById('saveBtn').textContent='💾 Simpan';document.querySelector('.panel-title').textContent='＋  Tambah Data Siswa';
+});
+function editStudent(id){
+ const s=students.find(x=>x.id===id);if(!s)return;editId=id;
+ document.getElementById('nama').value=s.nama;document.getElementById('nis').value=s.nis;document.getElementById('kelas').value=s.kelas;document.getElementById('alamat').value=s.alamat;
+ document.querySelector(`input[name="gender"][value="${s.gender}"]`).checked=true;
+ document.querySelectorAll('input[name="hobi"]').forEach(x=>x.checked=s.hobi.includes(x.value));
+ document.getElementById('saveBtn').textContent='✓ Perbarui';document.querySelector('.panel-title').textContent='✎  Edit Data Siswa';document.getElementById('form').scrollIntoView({behavior:'smooth'});
+}
+function deleteStudent(id){if(confirm('Yakin ingin menghapus data siswa ini?')){students=students.filter(s=>s.id!==id);save();render();if(editId===id){form.reset();editId=null}}}
+form.addEventListener('reset',()=>{setTimeout(()=>{editId=null;document.getElementById('saveBtn').textContent='💾 Simpan';document.querySelector('.panel-title').textContent='＋  Tambah Data Siswa'},0)});
+search.addEventListener('input',render);render();
+</script>
+</body>
+</html>
